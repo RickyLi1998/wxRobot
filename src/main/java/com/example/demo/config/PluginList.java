@@ -46,11 +46,11 @@ public class PluginList {
         event.setMessage(apiEvent.getMsg());
         event.setUserId(apiEvent.getFrom_wxid());
         event.setUsername(apiEvent.getFrom_name());
-
+        Bot bot = new Bot(apiEvent.getRobot_wxid());
         for (Class o : list) {
             Object bean = SpringUtil.getBean(o);
             Method method = o.getMethod("onPrivateMessage", Bot.class, PrivateMessageEvent.class);
-            int invoke = (int) method.invoke(bean, new Bot(),event);
+            int invoke = (int) method.invoke(bean, bot,event);
             if (invoke != 0){
                 break;
             }
@@ -68,11 +68,11 @@ public class PluginList {
         event.setUsername(apiEvent.getFinal_from_name());
         event.setGroupId(apiEvent.getFrom_wxid());
         event.setGroupName(apiEvent.getFrom_name());
-
+        Bot bot = new Bot(apiEvent.getRobot_wxid());
         for (Class o : list) {
             Object bean = SpringUtil.getBean(o);
             Method method = o.getMethod("onGroupMessage", Bot.class, GroupMessageEvent.class);
-            int invoke = (int) method.invoke(bean, new Bot(),event);
+            int invoke = (int) method.invoke(bean, bot, event);
             if (invoke != 0){
                 break;
             }
