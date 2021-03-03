@@ -42,6 +42,11 @@ public class Bot {
      * */
     public void sendGroupMessage(String groupId, String message, String userId, String username, boolean isAt){
         params = new HashMap<>();
+        try {
+            message = URLEncoder.encode(message,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         if (isAt){
             params.put("to_wxid",groupId);
             params.put("robot_wxid",robotId);
