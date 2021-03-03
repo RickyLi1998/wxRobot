@@ -16,6 +16,20 @@ sendFileMessage()       // 发送文件
 sendEmojiMessage()      // 发送表情图
 sendLinkMessage()       // 分享链接 中文的编码目前存在问题
 sendMusicMessage()      // 点歌
+getBotName()            // 获取机器人昵称
+getBotHeadPic()         // 获取机器人头像
+getBotList()            // 获取机器框架登录的账号列表
+getFriendList()         // 获取好友列表
+getGroupList()          // 获取群聊列表
+getGroupMemberList()    // 获取群聊成员列表
+getGroupMember()        // 获取群成员信息
+modifyFriendNote()      // 修改好友备注
+deleteFriend()          // 删除好友
+removeGroupMember()     // 移出群成员
+modifyGroupName()       // 修改群名称
+modifyGroupNotice()     // 修改群公告
+quitGroup()             // 退出群聊
+inviteInGroup()         // 邀请入群
 ```
 目前支持的消息事件有
 ```java
