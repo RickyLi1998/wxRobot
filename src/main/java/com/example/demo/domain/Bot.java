@@ -4,6 +4,7 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.example.demo.event.FriendAddEvent;
 import com.example.demo.util.EncodeUtil;
 
 import java.io.UnsupportedEncodingException;
@@ -356,6 +357,18 @@ public class Bot {
         params.put("robot_wxid",robotId);
         params.put("friend_wxid",userId);
         params.put("group_wxid",groupId);
+        JSONObject obj = JSONUtil.parseObj(params);
+        HttpUtil.post(domain, obj.toString());
+    }
+
+    /**
+     * 同意加好友请求
+     * */
+    public void agreeFriendVerify(FriendAddEvent event){
+        params = new HashMap<>();
+        params.put("type",AGREE_FRIEND_VERIFY);
+        params.put("robot_wxid",robotId);
+        params.put("msg",event.getEventMsg());
         JSONObject obj = JSONUtil.parseObj(params);
         HttpUtil.post(domain, obj.toString());
     }

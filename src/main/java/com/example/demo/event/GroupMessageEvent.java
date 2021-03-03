@@ -1,4 +1,4 @@
-package com.example.demo.domain;
+package com.example.demo.event;
 
 import lombok.Data;
 
@@ -9,4 +9,5 @@ public class GroupMessageEvent {
     private String groupId;
     private String groupName;
     private String message;
+    private int type;
 }

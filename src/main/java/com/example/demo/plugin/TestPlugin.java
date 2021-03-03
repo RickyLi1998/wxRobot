@@ -2,8 +2,8 @@ package com.example.demo.plugin;
 
 import com.example.demo.domain.Bot;
 import com.example.demo.domain.BotPlugin;
-import com.example.demo.domain.GroupMessageEvent;
-import com.example.demo.domain.PrivateMessageEvent;
+import com.example.demo.event.*;
+import com.sun.istack.internal.NotNull;
 import org.springframework.stereotype.Component;
 
 import static com.example.demo.config.MessageConfig.MESSAGE_BLANK;
@@ -42,13 +42,13 @@ public class TestPlugin extends BotPlugin {
     @Override
     public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         if (event.getMessage().equals("hi")){
-            bot.sendGroupMessage(event.getGroupId(),"hello~",event.getUserId(),event.getUsername(),false);
+            bot.sendGroupMessage(event.getGroupId(),"你好~",event.getUserId(),event.getUsername(),false);
         }
 
         if (event.getMessage().equals("获取成员列表")){
             bot.getGroupMemberList(event.getGroupId(),true);
         }
-        if (event.getMessage().equals("我得微信信息")){
+        if (event.getMessage().equals("我的微信信息")){
             bot.sendGroupMessage(event.getGroupId(),
                     bot.getGroupMember(event.getGroupId(), event.getUserId()).toString(),
                     event.getUserId(),event.getUsername(),false);
@@ -60,4 +60,24 @@ public class TestPlugin extends BotPlugin {
         }
         return MESSAGE_IN;
     }
+
+    @Override
+    public int onFriendAddEvent(@NotNull Bot bot, FriendAddEvent event) {
+        bot.agreeFriendVerify(event);
+
+        return MESSAGE_IN;
+    }
+
+    @Override
+    public int onGroupIncreaseNotice(Bot bot, GroupIncreaseNoticeEvent event) {
+        bot.sendGroupMessage(event.getGroupId(),"群成员增加","","",false);
+        return MESSAGE_IN;
+    }
+
+    @Override
+    public int onGroupDecreaseNotice(@NotNull Bot bot, GroupDecreaseNoticeEvent event) {
+        bot.sendGroupMessage(event.getGroupId(),"群成员减少","","",false);
+        return MESSAGE_IN;
+    }
+
 }

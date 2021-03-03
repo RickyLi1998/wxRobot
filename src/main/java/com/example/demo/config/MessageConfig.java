@@ -18,6 +18,7 @@ public class MessageConfig {
     public static final int GET_ROBOT_GROUP = 205;
     public static final int GET_ROBOT_GROUP_MEMBER_LIST = 206;
     public static final int GET_ROBOT_GROUP_MEMBER = 207;
+    public static final int AGREE_FRIEND_VERIFY = 303;
     public static final int MODIFY_FRIEND_NOTE = 304;
     public static final int DELETE_FRIEND = 305;
     public static final int REMOVE_GROUP_MEMBER = 306;

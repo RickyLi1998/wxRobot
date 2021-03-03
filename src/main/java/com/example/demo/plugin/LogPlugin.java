@@ -2,8 +2,8 @@ package com.example.demo.plugin;
 
 import com.example.demo.domain.Bot;
 import com.example.demo.domain.BotPlugin;
-import com.example.demo.domain.GroupMessageEvent;
-import com.example.demo.domain.PrivateMessageEvent;
+import com.example.demo.event.GroupMessageEvent;
+import com.example.demo.event.PrivateMessageEvent;
 import com.sun.istack.internal.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,6 +23,8 @@ public class LogPlugin extends BotPlugin {
         String message = event.getMessage(); // 接收的消息
         String userId = event.getUserId(); // 发送人id
         String username = event.getUsername(); // 发送人名称
+        int msgType = event.getType(); // 1文本消息 3图片消息 34语音消息
+
         log.info("收到私聊消息 昵称: {} 消息内容 {}",username,message);
         return MESSAGE_IN;
     }
@@ -39,6 +41,8 @@ public class LogPlugin extends BotPlugin {
         String username = event.getUsername(); // 发送人名称
         String groupId = event.getGroupId(); // 群id
         String groupName = event.getGroupName(); // 群名称
+        int msgType = event.getType(); // 1文本消息 3图片消息 34语音消息
+
         log.info("收到群聊消息 群名: {} 昵称 {} 消息内容 {}",groupName,username,message);
         return MESSAGE_IN;
     }

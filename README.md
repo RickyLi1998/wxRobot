@@ -30,11 +30,15 @@ modifyGroupName()       // 修改群名称
 modifyGroupNotice()     // 修改群公告
 quitGroup()             // 退出群聊
 inviteInGroup()         // 邀请入群
+agreeFriendVerify()     // 同意加好友请求
 ```
 目前支持的消息事件有
 ```java
-onPrivateMessage()  //私聊事件
-onGroupMessage()    //群聊事件
+onPrivateMessage()          //私聊事件
+onGroupMessage()            //群聊事件
+onFriendAddEvent()          //好友申请事件
+onGroupIncreaseNotice()     //群成员增加
+onGroupDecreaseNotice()     //群成员减少
 ```
 ----
 插件的开发需要继承 BotPlugin
