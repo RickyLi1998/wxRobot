@@ -6,6 +6,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.example.demo.event.FriendAddEvent;
 import com.example.demo.util.EncodeUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -15,9 +16,10 @@ import java.util.Map;
 
 import static com.example.demo.config.MessageConfig.*;
 
+@Slf4j
 public class Bot {
     private String robotId;
-    private String domain = "http://127.0.0.1:8073/send";
+    private String domain = "http://42.51.222.124:8073/send";
     private  Map<String,Object> params = null;
 
     public Bot(String robotId){
@@ -265,7 +267,11 @@ public class Bot {
         params.put("group_wxid",groupId);
         params.put("member_wxid",userId);
         JSONObject obj = JSONUtil.parseObj(params);
-        obj = JSONUtil.parseObj(HttpUtil.post(domain, obj.toString())).getJSONObject("data");
+        String post = URLDecoder.decode(HttpUtil.post(domain, obj.toString()));
+        post = post.replace("\"data\":\"{\"","\"data\":{\"");
+        post = post.replace("\"}\"}","\"}}");
+        obj = JSONUtil.parseObj(post).getJSONObject("data");
+        log.info(obj.toString());
         return obj;
     }
 
