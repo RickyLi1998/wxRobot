@@ -3,7 +3,6 @@
 可爱猫4.0消息处理端
 ----
 在plugin包下新建你的插件<br>
-在application.yml中注册你的插件<br>
 ----
 在使用前需要在bot中配置可爱猫的服务器地址<br>
 目前bot的API支持<br>
@@ -41,10 +40,11 @@ onGroupIncreaseNotice()     //群成员增加
 onGroupDecreaseNotice()     //群成员减少
 ```
 ----
-插件的开发需要继承 BotPlugin
+插件的开发需要实现 BotPlugin
 ```java
 @Component
-public class TestPlugin extends BotPlugin {
+@Order(0)//执行顺序 越小越靠前
+public class TestPlugin implements BotPlugin {
     // 根据需要去实现 BotPlugin 的事件 目前就只有两种事件
 }
 ```

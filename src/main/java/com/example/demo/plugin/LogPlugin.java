@@ -6,13 +6,16 @@ import com.example.demo.event.GroupMessageEvent;
 import com.example.demo.event.PrivateMessageEvent;
 import com.sun.istack.internal.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import static com.example.demo.config.MessageConfig.MESSAGE_IN;
 
 @Slf4j
 @Component
-public class LogPlugin extends BotPlugin {
+@Order(Integer.MIN_VALUE)
+public class LogPlugin implements BotPlugin {
     /**
      * 私聊消息
      * bot 机器人对象

@@ -4,13 +4,15 @@ import com.example.demo.domain.Bot;
 import com.example.demo.domain.BotPlugin;
 import com.example.demo.event.*;
 import com.sun.istack.internal.NotNull;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import static com.example.demo.config.MessageConfig.MESSAGE_BLANK;
 import static com.example.demo.config.MessageConfig.MESSAGE_IN;
 
 @Component
-public class TestPlugin extends BotPlugin {
+@Order(0)
+public class TestPlugin implements BotPlugin {
     @Override
     public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
         if (event.getMessage().equals("hi")){

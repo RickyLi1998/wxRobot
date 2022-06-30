@@ -3,31 +3,21 @@ package com.example.demo.config;
 import cn.hutool.json.JSONUtil;
 import com.example.demo.domain.ApiEvent;
 import com.example.demo.domain.Bot;
+import com.example.demo.domain.BotPlugin;
 import com.example.demo.event.*;
-import com.example.demo.util.SpringUtil;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 @Component
-@ConfigurationProperties(prefix = "plugin")
+@RequiredArgsConstructor
 public class PluginList {
-    private List<Class<Object>> list;
+    private final List<BotPlugin> list;
 
-    public void setList(List<Class<Object>> list) {
-        this.list = list;
-    }
-
-    public List<Class<Object>> getList() {
-        return list;
-    }
-
-    public void handle(ApiEvent event) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        if (event != null){
-            switch (event.getType()){
+    public void handle(ApiEvent event) {
+        if (event != null) {
+            switch (event.getType()) {
                 case 100: //私聊事件
                     onPrivateMessage(event);
                     break;
@@ -49,18 +39,16 @@ public class PluginList {
 
     /**
      * 私聊事件
-     * */
-    public PrivateMessageEvent onPrivateMessage(ApiEvent apiEvent) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException{
+     */
+    public PrivateMessageEvent onPrivateMessage(ApiEvent apiEvent) {
         PrivateMessageEvent event = new PrivateMessageEvent();
         event.setMessage(apiEvent.getMsg());
         event.setUserId(apiEvent.getFrom_wxid());
         event.setUsername(apiEvent.getFrom_name());
         Bot bot = new Bot(apiEvent.getRobot_wxid());
-        for (Class o : list) {
-            Object bean = SpringUtil.getBean(o);
-            Method method = o.getMethod("onPrivateMessage", Bot.class, PrivateMessageEvent.class);
-            int invoke = (int) method.invoke(bean, bot,event);
-            if (invoke != 0){
+        for (BotPlugin botPlugin : list) {
+            int invoke = botPlugin.onPrivateMessage(bot, event);
+            if (invoke != 0) {
                 break;
             }
         }
@@ -69,8 +57,8 @@ public class PluginList {
 
     /**
      * 群聊事件
-     * */
-    public GroupMessageEvent onGroupMessageEvent(ApiEvent apiEvent) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+     */
+    public GroupMessageEvent onGroupMessageEvent(ApiEvent apiEvent) {
         GroupMessageEvent event = new GroupMessageEvent();
         event.setMessage(apiEvent.getMsg());
         event.setUserId(apiEvent.getFinal_from_wxid());
@@ -78,11 +66,9 @@ public class PluginList {
         event.setGroupId(apiEvent.getFrom_wxid());
         event.setGroupName(apiEvent.getFrom_name());
         Bot bot = new Bot(apiEvent.getRobot_wxid());
-        for (Class o : list) {
-            Object bean = SpringUtil.getBean(o);
-            Method method = o.getMethod("onGroupMessage", Bot.class, GroupMessageEvent.class);
-            int invoke = (int) method.invoke(bean, bot, event);
-            if (invoke != 0){
+        for (BotPlugin botPlugin : list) {
+            int invoke = botPlugin.onGroupMessage(bot, event);
+            if (invoke != 0) {
                 break;
             }
         }
@@ -92,16 +78,14 @@ public class PluginList {
     /**
      * 收到好友请求事件
      * */
-    public FriendAddEvent onFriendAddEvent(ApiEvent apiEvent) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public FriendAddEvent onFriendAddEvent(ApiEvent apiEvent)  {
         FriendAddEvent event = new FriendAddEvent();
         event.setUserId(apiEvent.getFrom_wxid());
         event.setUsername(apiEvent.getFrom_name());
         event.setEventMsg(apiEvent.getMsg());
         Bot bot = new Bot(apiEvent.getRobot_wxid());
-        for (Class o : list) {
-            Object bean = SpringUtil.getBean(o);
-            Method method = o.getMethod("onFriendAddEvent", Bot.class, FriendAddEvent.class);
-            int invoke = (int) method.invoke(bean, bot, event);
+        for (BotPlugin botPlugin : list) {
+            int invoke = botPlugin.onFriendAddEvent( bot, event);
             if (invoke != 0){
                 break;
             }
@@ -113,16 +97,14 @@ public class PluginList {
     /**
      * 群成增加
      * */
-    public GroupIncreaseNoticeEvent onGroupIncreaseNotice(ApiEvent apiEvent) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public GroupIncreaseNoticeEvent onGroupIncreaseNotice(ApiEvent apiEvent)  {
         GroupIncreaseNoticeEvent event = new GroupIncreaseNoticeEvent();
         event.setGroupId(apiEvent.getFrom_wxid());
         event.setGroupName(apiEvent.getFrom_name());
         event.setInfo(JSONUtil.parseObj(apiEvent.getMsg()));
         Bot bot = new Bot(apiEvent.getRobot_wxid());
-        for (Class o : list) {
-            Object bean = SpringUtil.getBean(o);
-            Method method = o.getMethod("onGroupIncreaseNotice", Bot.class, GroupIncreaseNoticeEvent.class);
-            int invoke = (int) method.invoke(bean, bot, event);
+        for (BotPlugin botPlugin : list) {
+            int invoke = botPlugin.onGroupIncreaseNotice( bot, event);
             if (invoke != 0){
                 break;
             }
@@ -133,16 +115,14 @@ public class PluginList {
     /**
      * 群成员减少
      * */
-    public GroupDecreaseNoticeEvent onGroupDecreaseNotice(ApiEvent apiEvent) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public GroupDecreaseNoticeEvent onGroupDecreaseNotice(ApiEvent apiEvent)  {
         GroupDecreaseNoticeEvent event = new GroupDecreaseNoticeEvent();
         event.setGroupId(apiEvent.getFrom_wxid());
         event.setGroupName(apiEvent.getFrom_name());
         event.setInfo(JSONUtil.parseObj(apiEvent.getMsg()));
         Bot bot = new Bot(apiEvent.getRobot_wxid());
-        for (Class o : list) {
-            Object bean = SpringUtil.getBean(o);
-            Method method = o.getMethod("onGroupDecreaseNotice", Bot.class, GroupDecreaseNoticeEvent.class);
-            int invoke = (int) method.invoke(bean, bot, event);
+        for (BotPlugin botPlugin : list) {
+            int invoke = botPlugin.onGroupDecreaseNotice( bot, event);
             if (invoke != 0){
                 break;
             }
