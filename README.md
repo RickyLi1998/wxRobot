@@ -3,7 +3,6 @@
 可爱猫4.0消息处理端
 ----
 在plugin包下新建你的插件<br>
-在application.yml中注册你的插件<br>
 ----
 在使用前需要在bot中配置可爱猫的服务器地址<br>
 目前bot的API支持<br>
