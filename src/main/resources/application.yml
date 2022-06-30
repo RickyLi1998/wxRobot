@@ -1,7 +1,2 @@
 server:
   port: 80
-
-plugin:
-  list:
-    - com.example.demo.plugin.LogPlugin #log插件
-    - com.example.demo.plugin.TestPlugin #测试插件
